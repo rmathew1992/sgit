@@ -7,4 +7,7 @@ lazy val root = (project in file(".")).
     name := "scalatest-example"
   )
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "3.0.5" % Test,
+  "commons-io" % "commons-io" % "2.6" % Test
+)
