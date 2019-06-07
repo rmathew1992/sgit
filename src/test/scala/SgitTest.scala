@@ -1,16 +1,27 @@
+package sgit
+
 import java.nio.file.{Paths, Files}
 import java.io.File
 import org.apache.commons.io.FileUtils
 import org.scalatest.FunSpec
+import org.scalatest.{BeforeAndAfterEach, Suite}
 
-class SgitTest extends FunSpec {
+class SgitTest extends FunSpec with BeforeAndAfterEach {
+  afterEach
   describe("Sgit") {
     describe("if directory is already initialized") {
       it("returns an error") {
         FileUtils.deleteDirectory(new File(".sgit"))
         Files.createDirectories(Paths.get(".sgit"))
+        val paths = DirectoryPaths(
+          Paths.get(".sgit"),
+          Paths.get(".sgit/objects"),
+          Paths.get(".sgit/refs" )
+        )
 
-        assertThrows[RuntimeException](Sgit.init)
+        val sgit = new Sgit(paths)
+
+        assertThrows[RuntimeException](sgit.init)
       }
     }
 
@@ -19,7 +30,15 @@ class SgitTest extends FunSpec {
         FileUtils.deleteDirectory(new File(".sgit"))
         assert(Files.exists(Paths.get(".sgit")) == false)
 
-        Sgit.init
+        val paths = DirectoryPaths(
+          Paths.get(".sgit"),
+          Paths.get(".sgit/objects"),
+          Paths.get(".sgit/refs" )
+        )
+
+        val sgit = new Sgit(paths)
+
+        sgit.init
 
         assert(Files.exists(Paths.get(".sgit/objects/info")) == true)
         assert(Files.exists(Paths.get(".sgit/objects/pack")) == true)
@@ -29,7 +48,15 @@ class SgitTest extends FunSpec {
         FileUtils.deleteDirectory(new File(".sgit"))
         assert(Files.exists(Paths.get(".sgit")) == false)
 
-        Sgit.init
+        val paths = DirectoryPaths(
+          Paths.get(".sgit"),
+          Paths.get(".sgit/objects"),
+          Paths.get(".sgit/refs" )
+        )
+
+        val sgit = new Sgit(paths)
+
+        sgit.init
 
         assert(Files.exists(Paths.get(".sgit/refs/heads")) == true)
         assert(Files.exists(Paths.get(".sgit/refs/tags")) == true)

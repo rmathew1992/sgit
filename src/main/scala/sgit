@@ -1,0 +1,13 @@
+#!/usr/bin/env scala
+
+if (args.length == 0) {
+  println("Please enter a valid git command")
+} else {
+  val possible_commands_list = List("add", "commit", "init")
+  val command = possible_commands_list.find((c: String) => c == args(0))
+
+  command match {
+    case Some(x) => println("Execute valid command")
+    case None => println("Please enter a valid command")
+  }
+}
