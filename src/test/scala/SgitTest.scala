@@ -63,7 +63,20 @@ class SgitTest extends FunSpec with BeforeAndAfterEach {
       }
 
       it("builds HEAD file") {
-        assert(true)
+        FileUtils.deleteDirectory(new File(".sgit"))
+        assert(Files.exists(Paths.get(".sgit")) == false)
+
+        val paths = DirectoryPaths(
+          Paths.get(".sgit"),
+          Paths.get(".sgit/objects"),
+          Paths.get(".sgit/refs" )
+        )
+
+        val sgit = new Sgit(paths)
+
+        sgit.init
+
+        assert(Files.exists(Paths.get(".sgit/HEAD")) == true)
       }
     }
   }
